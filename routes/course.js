@@ -18,6 +18,6 @@ courseRouter.get("/preview",function(req,res){
 
 })
 
-module.export={
+module.exports={
     courseRouter:courseRouter
 }

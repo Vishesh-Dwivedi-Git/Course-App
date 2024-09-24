@@ -3,6 +3,8 @@ const {adminModel}=require("../db")
 const adminRouter=Router();
 
 adminRouter.post("/signup",function(req,res){
+    const email=req.body.email;
+    const password=
 
     res.send("You are signedUp");
 
@@ -20,6 +22,6 @@ adminRouter.get("purchases",function(req,res){
 
 })
 
-module.export={
+module.exports={
     adminRouter:adminRouter
 }
