@@ -2,13 +2,17 @@ const {Router}=require("express");
 const userRouter=Router();
 const jwt=require("jsonwebtoken");
 const {z}=require("zod");
+const {userModel} =require("../db");
 
-userRouter.post("/signup",function(req,res){
+
+
+userRouter.post("/signup",async function(req,res){
     //input validation 
     const requiredBody=z.object({
         email:z.string().min(3).max(100).email(),
-        name:z.string().min(3).max(100),
-        password:z.string().min(3).max(30)
+        password:z.string().min(3).max(30),
+        firstName:z.string().min(3).max(100),
+        lastName:z.string().min(3).max(100),
     });
     const parsedDataWithSuccess=requiredBody.safeParse(req.body);
     if(!parsedDataWithSuccess.success){
@@ -18,11 +22,21 @@ userRouter.post("/signup",function(req,res){
         })
         return;
     }
-    const email=req.body.email;
-    const password=req.body.password;
-    const name=req.body.name;
+    const {email, password,firstName, lastName}=req.body;
+    try{
+    await userModel.create({
+        email:email,
+        password:password,
+        firstName :firstName,
+        lastName:lastName
 
+    })
     res.send("You are signedUp");
+    
+}catch(e){
+    console.log(e);
+    res.status(500).send("internal server error");
+}
 
 })
 
